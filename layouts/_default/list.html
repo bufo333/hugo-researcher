@@ -2,9 +2,27 @@
 <div class="container">
     <h1>{{ .Title }}</h1>
     <ul>
-        {{ range .Pages }}
-            <li><a href="{{ .Permalink }}">{{ .Date.Format "2006-01-02" }} | {{ .Title }}</a></li>
+        {{ range .Paginator.Pages.ByDate.Reverse }}
+            <li>
+                <a href="{{ .Permalink }}">{{ .Date.Format "2006-01-02" }} | {{ .Title }}</a>
+                <p></p><p>
+                    {{ $summarysplits := split .Content "<!--start-summary-->" }}
+                    {{ if ge (len $summarysplits) 2 }}
+                    {{ index $summarysplits 1 | safeHTML | truncate 350 }}
+                    {{ else }}
+                    {{ .Summary }}
+                    {{ end }}
+                </p>
+            </li>
+
         {{ end }}
+
     </ul>
+          {{ if .Paginator.HasPrev }}
+    <a href="{{ .Paginator.Prev.URL }}">  Prev </a>
+{{ end }}
+{{ if .Paginator.HasNext }}
+    <a href="{{ .Paginator.Next.URL }}">  Next </a>
+    {{ end }}
 </div>
 {{ end }}
