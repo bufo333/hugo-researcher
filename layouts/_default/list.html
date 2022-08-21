@@ -8,9 +8,14 @@
                 <p></p><p>
                     {{ $summarysplits := split .Content "<!--start-summary-->" }}
                     {{ if ge (len $summarysplits) 2 }}
-                    {{ index $summarysplits 1 | safeHTML | truncate 350 }}
-                    {{ else }}
-                    {{ .Summary }}
+                        {{ $test := split (index $summarysplits 1 ) "<!--nomore-->"  }}
+                        {{if ge (len $test) 2 }}
+                        {{index $test 0  | plainify | safeHTML }}
+                        {{ else }}
+                    {{ index $test 0 |  plainify | safeHTML | truncate 350 }}
+                    {{ end }}
+                    {{ else  }}
+                    {{ .Summary | truncate 350 }}
                     {{ end }}
                 </p>
             </li>
