@@ -13,5 +13,8 @@
 
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1329465157209102"
     crossorigin="anonymous"></script>
+        {{ if and (not .Site.IsServer) .Site.Data.consent }}
+        {{- partial "consent.html" . -}}
+        {{ end }}
     </body>
 </html>
